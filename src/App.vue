@@ -1,17 +1,31 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Header></Header>
+    <router-view movieData="movieData"></router-view>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Header from './components/Header';
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Header
+  },
+  data() {
+    return {
+      data: []
+    }
+  },
+  methods:{
+  },
+  beforeUpdate() {
+    this.$on('movie-data', (movies) => {
+      // eslint-disable-next-line no-console
+      console.log(movies)
+      this.data = movies;
+    });
   }
 }
 </script>
@@ -23,6 +37,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>
