@@ -34,16 +34,17 @@
                 e.preventDefault();
                 this.loading = 'loading';
                 this.search.init(e.target.value);
+                this.search.setPage(0);
                 this.search.getMovies().then(data => {
                     this.loading = '';
                     if (data instanceof Error) this.error = data.message;
                     else {
                         this.$emit('movie-data', data);
-                        this.$router.push(`/result?page=${this.search.page}`)
+                        this.$router.push('/result')
                     }
                 }).catch(err => err);
             }
-        }
+        },
     }
 </script>
 

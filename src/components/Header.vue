@@ -3,6 +3,7 @@
     <a href="https://www.lovetoknow.com/">
       <img class="logo" src="../assets/logo.png" />
     </a>
+    <RouterLink class="home-link" to="/search">HOME</RouterLink>
   </header>
 </template>
 
@@ -32,6 +33,12 @@ export default {
     font-family: 'Open Sans', sans-serif;
     font-size: 28px;
     background-color: #163247;
+  }
+
+  .home-link {
+    align-self: center;
+    color: #e31721;
+    font-family: 'Open Sans', sans-serif;
   }
 
 </style>

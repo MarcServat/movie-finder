@@ -1,11 +1,14 @@
 <template>
     <div :class="'results ui segment ' + loading">
         <div class="slides fade">
+            <div>{{this.search.getPage()}} of {{this.search.getTotalPages()}} pages</div>
             <div class="header">{{movie.getTitle()}}</div>
             <div class="description">{{movie.getYear()}}</div>
-            <div class="ui small image">
-               <img v-if="movie.getPoster() !== 'N/A'" :src="movie.getPoster()" style="width:100%" alt="Movie Cover">
-                <i v-else class="ban icon"></i>
+            <div v-if="movie.getPoster() !== 'N/A' && getImage()" class="ui small image">
+               <img :src="movieImage" style="width:100%" alt="Movie Cover">
+            </div>
+            <div v-else class="ui ui icon header">
+                <i class="ban icon"></i>
             </div>
             <div class="meta">{{movie.getImdbID()}}</div>
             <div class="meta">{{movie.getType()}}</div>
@@ -22,55 +25,68 @@
     import SearchService from "../services/search.service"
 
     export default {
-        name: 'Result',
-        props: {
-            movieData: {
-                type: Object,
-                required: true
-            }
-        },
-        data() {
-            return {
-                movie: new Movie({}),
-                search: SearchService,
-                pages: 0,
-                slide: {
-                    pos: 0,
-                    max: this.movieData.data.length - 1,
-                },
-                loading: ''
-            }
-        },
-        methods: {
-            onLeft(n) {
-                this.slide.pos <= 0 ? this.slide.pos = 0 : this.slide.pos += n;
-                this.movie = this.movieData.data[this.slide.pos];
-            },
-            onRight(n) {
-                if(this.slide.pos >= this.slide.max) {
-                    this.slide.pos = this.slide.max;
-                    this.loading = 'loading';
-                    this.search.getMovies(this.search.query).then(res => {
-                        this.movieData.data = res.data;
-                        this.loading = '';
-                        this.slide.pos = 0;
-                        this.slide.max = this.movieData.data.length - 1;
-                    }).catch(err => console.log(err));
-                } else {
-                    this.slide.pos += n;
-                }
-                this.movie = this.movieData.data[this.slide.pos];
-            }
-        },
-        created() {
-          console.log(this.movieData)
-            if(this.movieData.data.length > 0) {
-                this.movie = this.movieData.data[0];
-                this.pages = this.movieData.pages;
-            } else {
-                this.$router.push('/404');
-            }
+      name: 'Result',
+      props: {
+        movieData: {
+          type: Object,
+          required: true
         }
+      },
+      data() {
+        return {
+          movie: new Movie({}),
+          search: SearchService,
+          movieImage: '',
+          pages: 0,
+          slide: {
+            pos: 0,
+            max: this.movieData.data.length - 1,
+          },
+          loading: ''
+        }
+      },
+      methods: {
+        onLeft(n) {
+          if (this.search.getPage() > 1 && this.slide.pos === 0) {
+            this.requestImages(n);
+          } else {
+            this.slide.pos === 0 ? this.slide.pos : this.slide.pos += n;
+            this.movie = this.movieData.data[this.slide.pos];
+          }
+        },
+        onRight(n) {
+            if (this.search.getPage() < this.search.getTotalPages() && this.slide.pos === this.slide.max) {
+              this.requestImages(n);
+            } else {
+              this.slide.pos === this.search.getTotalPages() ? this.slide.pos : this.slide.pos += n;
+              this.movie = this.movieData.data[this.slide.pos];
+            }
+            this.movie = this.movieData.data[this.slide.pos];
+        },
+        requestImages(n) {
+          this.loading = 'loading';
+          this.search.getMovies(n).then(res => {
+            this.movieData.data = res.data;
+            this.loading = '';
+            this.slide.pos = 0;
+            this.movie = this.movieData.data[this.slide.pos];
+            this.slide.max = this.movieData.data.length - 1;
+          }).catch(err => console.log(err));
+        },
+        getImage() {
+          this.search.coverMovie(this.movie.getPoster()).then(res => {
+            this.movieImage = res;
+          });
+          return this.movieImage;
+        }
+      },
+      created() {
+        if (typeof this.movieData.data !== 'undefined') {
+          this.movie = this.movieData.data[0];
+        } else {
+          this.$router.push('/404');
+        }
+      }
     }
 </script>
 
