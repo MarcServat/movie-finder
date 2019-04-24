@@ -14,12 +14,15 @@ export class Movie {
     getyear() {
         return this.year;
     }
+
     getimdbID() {
         return this.imdbID;
     }
+
     gettype() {
         return this.type;
     }
+
     getposter() {
         return this.poster;
     }

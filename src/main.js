@@ -9,7 +9,7 @@ const router = new VueRouter({
   routes
 });
 
-export const EventBus = new Vue({
+new Vue({
   render: h => h(App),
   router,
 }).$mount('#app')

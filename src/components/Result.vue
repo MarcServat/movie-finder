@@ -1,7 +1,8 @@
 <template>
     <div class="results">
+        {{movies}}
         <div class="mySlides fade" v-for="movie in movies" :key="movie.getimdbID()">
-            <div class="numbertext">{{movies.getTitle()}}</div>
+            <div class="numbertext">{{movie.getTitle()}}</div>
             <div class="text">{{movie.getyear()}}</div>
             <div class="text">{{movie.getimdbID()}}</div>
             <div class="text">{{movie.gettype()}}</div>
@@ -11,10 +12,8 @@
 </template>
 
 <script>
-    import {EventBus} from "../main";
-
     export default {
-        name: 'Search',
+        name: 'Result',
         props: {
         },
         data() {
@@ -23,12 +22,9 @@
             }
         },
         created() {
-            // eslint-disable-next-line no-console
-            EventBus.$on('movie-data', (movies) => {
-                // eslint-disable-next-line no-console
-                console.log(this.movies)
-                this.movies = movies;
-            });
+          this.$on('movie-data', (movies) => {
+            console.log(movies)
+          })
         }
     }
 </script>

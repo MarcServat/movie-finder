@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app ui items">
     <Header></Header>
     <router-view movieData="movieData"></router-view>
   </div>
@@ -15,17 +15,16 @@ export default {
   },
   data() {
     return {
-      data: []
+      movies: []
     }
   },
   methods:{
   },
-  beforeUpdate() {
+  created() {
     this.$on('movie-data', (movies) => {
-      // eslint-disable-next-line no-console
-      console.log(movies)
-      this.data = movies;
-    });
+      this.movies = movies;
+      console.log('APP', movies)
+    })
   }
 }
 </script>
@@ -37,5 +36,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100vh !important;
 }
 </style>

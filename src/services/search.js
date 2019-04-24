@@ -1,5 +1,5 @@
 import OmdbAPI from '../api/omd-api';
-import {Movie} from "../Models/Movie";
+import {Movie} from "../models/Movie";
 
 export class Search {
 
