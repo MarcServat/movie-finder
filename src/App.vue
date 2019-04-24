@@ -2,9 +2,7 @@
   <div id="app ui items">
     <Header></Header>
     <router-view @movie-data="showResults"
-                 @retrive-movies="retrieveMovies"
-                 :movie-data="movieResponse"
-                 :retrieve-movie="nextPage">
+                 :movie-data="movieResponse">
     </router-view>
   </div>
 </template>
@@ -25,10 +23,8 @@ export default {
   },
   methods:{
     showResults(response) {
-      this.movieResponse = response
-    },
-    retrieveMovies() {
-      this.nextPage = true
+      console.log(response)
+      this.movieResponse = response;
     }
   },
 }

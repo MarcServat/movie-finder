@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import {Search} from '../services/search.service';
+    import search from '../services/search.service';
 
     export default {
         name: 'Search',
@@ -24,7 +24,7 @@
         },
         data() {
             return {
-                search: new Search(),
+                search: search,
                 error: '',
                 loading: ''
             }
@@ -33,29 +33,15 @@
             query (e) {
                 e.preventDefault();
                 this.loading = 'loading';
-                this.search.movie(e.target.value).then(data => {
+                this.search.init(e.target.value);
+                this.search.getMovies().then(data => {
                     this.loading = '';
                     if (data instanceof Error) this.error = data.message;
                     else {
-                        console.log(data)
-                        console.log(this.search)
                         this.$emit('movie-data', data);
                         this.$router.push(`/result?page=${this.search.page}`)
                     }
                 }).catch(err => err);
-            }
-        },
-        beforeUpdate() {
-            if(this.nextPage) {
-                this.search.movie(e.target.value).then(data => {
-                    if (data instanceof Error) this.error = data.message;
-                    else {
-                        console.log(data)
-                        console.log(this.search)
-                        this.$emit('movie-data', data);
-                        this.$router.push(`/result?page=${this.search.page}`)
-                    }
-                })
             }
         }
     }

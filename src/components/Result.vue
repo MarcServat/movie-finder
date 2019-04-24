@@ -1,10 +1,11 @@
 <template>
-    <div class="results ui segment stacked">
+    <div :class="'results ui segment ' + loading">
         <div class="slides fade">
             <div class="header">{{movie.getTitle()}}</div>
             <div class="description">{{movie.getYear()}}</div>
             <div class="ui small image">
-                <img :src="movie.getPoster()" style="width:100%">
+               <img v-if="movie.getPoster() !== 'N/A'" :src="movie.getPoster()" style="width:100%" alt="Movie Cover">
+                <i v-else class="ban icon"></i>
             </div>
             <div class="meta">{{movie.getImdbID()}}</div>
             <div class="meta">{{movie.getType()}}</div>
@@ -17,7 +18,8 @@
 
 <script>
 
-    import {Movie} from "../Models/Movie";
+    import {Movie} from "../models/Movie";
+    import SearchService from "../services/search.service"
 
     export default {
         name: 'Result',
@@ -30,11 +32,13 @@
         data() {
             return {
                 movie: new Movie({}),
+                search: SearchService,
                 pages: 0,
                 slide: {
                     pos: 0,
                     max: this.movieData.data.length - 1,
-                }
+                },
+                loading: ''
             }
         },
         methods: {
@@ -45,7 +49,13 @@
             onRight(n) {
                 if(this.slide.pos >= this.slide.max) {
                     this.slide.pos = this.slide.max;
-                    this.$emit('retrieve-movies', true);
+                    this.loading = 'loading';
+                    this.search.getMovies(this.search.query).then(res => {
+                        this.movieData.data = res.data;
+                        this.loading = '';
+                        this.slide.pos = 0;
+                        this.slide.max = this.movieData.data.length - 1;
+                    }).catch(err => console.log(err));
                 } else {
                     this.slide.pos += n;
                 }
@@ -53,6 +63,7 @@
             }
         },
         created() {
+          console.log(this.movieData)
             if(this.movieData.data.length > 0) {
                 this.movie = this.movieData.data[0];
                 this.pages = this.movieData.pages;
@@ -70,6 +81,10 @@
         margin: auto;
     }
 
+    .slides {
+        text-align: center;
+    }
+
     .prev, .next {
         cursor: pointer;
         position: absolute;
@@ -83,11 +98,6 @@
         transition: 0.6s ease;
         border-radius: 0 3px 3px 0;
         user-select: none;
-    }
-
-    .next {
-        right: 0;
-        border-radius: 3px 0 0 3px;
     }
 
     .header {
