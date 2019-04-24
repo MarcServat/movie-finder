@@ -1,7 +1,11 @@
 <template>
   <div id="app">
     <Header></Header>
-    <router-view movieData="movieData"></router-view>
+    <router-view @movie-data="showResults"
+                 @retrive-movies="retrieveMovies"
+                 :movie-data="movieResponse"
+                 :retrieve-movie="nextPage">
+    </router-view>
   </div>
 </template>
 
@@ -15,18 +19,18 @@ export default {
   },
   data() {
     return {
-      data: []
+      movieResponse: {},
+      nextPage: false
     }
   },
   methods:{
+    showResults(response) {
+      this.movieResponse = response
+    },
+    retrieveMovies() {
+      this.nextPage = true
+    }
   },
-  beforeUpdate() {
-    this.$on('movie-data', (movies) => {
-      // eslint-disable-next-line no-console
-      console.log(movies)
-      this.data = movies;
-    });
-  }
 }
 </script>
 

@@ -18,7 +18,8 @@ export class Search {
         return this.omdb.get('', {params})
             .then(res => {
                 try {
-                    return res.data.Search.map(movie => new Movie(movie));
+                    const {Search, totalResults} = res.data
+                    return {data: Search.map(movie => new Movie(movie)), pages: totalResults};
                 } catch (e) {
                     e.message = res.data.Error;
                     return e;
