@@ -1,7 +1,11 @@
 <template>
   <div id="app ui items">
     <Header></Header>
-    <router-view movieData="movieData"></router-view>
+    <router-view @movie-data="showResults"
+                 @retrive-movies="retrieveMovies"
+                 :movie-data="movieResponse"
+                 :retrieve-movie="nextPage">
+    </router-view>
   </div>
 </template>
 
@@ -15,17 +19,18 @@ export default {
   },
   data() {
     return {
-      movies: []
+      movieResponse: {},
+      nextPage: false
     }
   },
   methods:{
+    showResults(response) {
+      this.movieResponse = response
+    },
+    retrieveMovies() {
+      this.nextPage = true
+    }
   },
-  created() {
-    this.$on('movie-data', (movies) => {
-      this.movies = movies;
-      console.log('APP', movies)
-    })
-  }
 }
 </script>
 
