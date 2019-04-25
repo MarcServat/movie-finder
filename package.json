@@ -5,13 +5,15 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "node ./node_modules/vue-gh-pages/index.js"
   },
   "dependencies": {
     "axios": "0.18.0",
     "core-js": "2.6.5",
     "eslint-plugin-prettier": "^3.0.1",
     "vue": "2.6.10",
+    "vue-gh-pages": "^1.19.0",
     "vue-router": "3.0.6"
   },
   "devDependencies": {
@@ -48,6 +50,7 @@
       "autoprefixer": {}
     }
   },
+  "homepage": "https://marcservat.github.io/movie-finder/",
   "browserslist": [
     "> 1%",
     "last 2 versions",
