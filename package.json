@@ -51,6 +51,7 @@
     }
   },
   "homepage": "https://marcservat.github.io/movie-finder/",
+  "wst": "/dist/",
   "browserslist": [
     "> 1%",
     "last 2 versions",
