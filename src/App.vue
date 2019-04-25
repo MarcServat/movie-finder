@@ -1,17 +1,15 @@
 <template>
   <div id="app ui items">
-    <Header></Header>
-    <router-view @movie-data="showResults"
-                 :movie-data="movieResponse">
-    </router-view>
+    <Header />
+    <router-view :movie-data="movieResponse" @movie-data="showResults" />
   </div>
 </template>
 
 <script>
-import Header from './components/Header';
+import Header from "./components/Header";
 
 export default {
-  name: 'app',
+  name: "App",
   components: {
     Header
   },
@@ -19,20 +17,20 @@ export default {
     return {
       movieResponse: {},
       nextPage: false
-    }
+    };
   },
-  methods:{
+  methods: {
     showResults(response) {
-      console.log(response)
+      console.log(response);
       this.movieResponse = response;
     }
-  },
-}
+  }
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

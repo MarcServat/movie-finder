@@ -1,7 +1,7 @@
-import axios from 'axios'
+import axios from "axios";
 
 export default axios.create({
-    baseURL: 'http://www.omdbapi.com/'
-})
+  baseURL: "http://www.omdbapi.com/"
+});
 
-export const getRequest = (url) => axios.get(url);
+export const getRequest = url => axios.get(url);
