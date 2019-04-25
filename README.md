@@ -35,6 +35,8 @@ to display the movies with a page counter.
 
 ### References
 
-https://vuejs.org/
+https://vuejs.org/ 
+
 https://www.w3schools.com/w3css/w3css_slideshow.asp
+
 https://semantic-ui.com/
